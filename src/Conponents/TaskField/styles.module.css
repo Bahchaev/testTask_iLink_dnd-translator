@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.personIcon {
+    height: 200px;
+}
+
+.speech {
+    padding: 10px;
+    width: 200px;
+    min-height: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+.speechTriangle {
+    content: ' ';
+    position: relative;
+    top: 18px;
+    left: 1px;
+    width: 0;
+    height: 0;
+    border: 10px solid;
+    border-color: transparent black black transparent ;
+}
+
+.speechTriangle:after {
+    content: ' ';
+    position: absolute;
+    left: -6px;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border: 9px solid;
+    border-color: transparent white white transparent ;
+}
+
+.speechContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 30px;
+    margin-left: -50px;
+}
