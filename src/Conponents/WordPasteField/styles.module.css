@@ -1,4 +1,13 @@
-.line {
-    border-bottom: 1px solid gray;
-    height: 30px;
+.dropZone {
+    border: 1px solid lightgray;
+    min-height: 100px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.dropZoneOver {
+    border: 2px solid green;
 }

@@ -5,6 +5,10 @@ import TaskField from "../TaskField/taskField";
 import DragAndDropContainer from "../DragAndDropContainer/DragAndDropContainer";
 import styles from './styles.module.css'
 import sentenceSet from '../../sentenceSet'
+// @ts-ignore
+import Button from "../Button/Button";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 function App() {
 
@@ -14,7 +18,10 @@ function App() {
         <div className={styles.appContainer}>
             <Header text={'Translate this sentence'}/>
             <TaskField text={taskText}/>
-            <DragAndDropContainer/>
+            <DndProvider backend={HTML5Backend}>
+                <DragAndDropContainer/>
+            </DndProvider>
+            <Button text={'Check'}/>
         </div>
     );
 }
