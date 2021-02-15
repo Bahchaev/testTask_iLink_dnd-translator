@@ -4,30 +4,33 @@ import styles from './styles.module.css'
 import cn from "classnames"
 import {useDrop} from 'react-dnd'
 import {ItemTypes} from "../../itemTypes";
+import Word from "../Word/Word";
 
-function WordPasteField() {
+
+interface WordPasteFieldProps {
+    words: Array<any>,
+}
+
+function WordPasteField(
+    {
+        words,
+    }: WordPasteFieldProps
+) {
 
     const [{canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.WORD,
         drop: (item, monitor) => {
-            //console.log(item);
-            if (canDrop) {
-                const dropZone = document.getElementById(`WordDropZone`);
-                const appendedElement = document.getElementById(monitor.getItem().id);
-
-                if (dropZone && appendedElement) dropZone.appendChild(appendedElement);
-
+            return {
+                dropZone: 'Field'
             }
         },
-        collect: (monitor) => (
-            {
+        collect: (monitor) => {
+            return ({
                 isOver: monitor.isOver(),
                 canDrop: monitor.canDrop(),
-            }
-        )
+            })
+        }
     });
-
-
 
     return (
         <div
@@ -35,7 +38,9 @@ function WordPasteField() {
             className={isOver ? cn(styles.dropZone, styles.dropZoneOver) : cn(styles.dropZone)}
             ref={drop}
         >
-
+            {words.map((word: { text: string; id: string; dragFrom: string }, index) =>
+                <Word text={word.text} id={word.id} index={index}/>
+            )}
         </div>
     )
 }

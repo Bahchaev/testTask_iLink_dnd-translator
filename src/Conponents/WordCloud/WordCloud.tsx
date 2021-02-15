@@ -1,28 +1,24 @@
 import React from "react";
 import Word from "../Word/Word";
 import styles from './styles.module.css'
-import sentenceSet from '../../sentenceSet'
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../../itemTypes";
 
-function WordCloud() {
 
-    const sentence = sentenceSet.get(Array.from(sentenceSet.keys())[0]);
-    const wordsArr = sentence.replace(',', '').split(' ');
-    const words = wordsArr.map((word:string, index:number) =>
-        <Word text={word} index={index}/>
-    );
+interface WordCloudProps {
+    words: Array<any>,
+}
 
+function WordCloud(
+    {
+        words,
+    }: WordCloudProps
+) {
     const [{canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.WORD,
         drop: (item, monitor) => {
-            //console.log(item);
-            if (canDrop) {
-                const dropZone = document.getElementById(`WordCloudZone`);
-                const appendedElement = document.getElementById(monitor.getItem().id);
-
-                if (dropZone && appendedElement) dropZone.appendChild(appendedElement);
-
+            return {
+                dropZone: 'Cloud'
             }
         },
         collect: (monitor) => (
@@ -39,7 +35,9 @@ function WordCloud() {
             className={styles.wordCloud}
             ref={drop}
         >
-            {words}
+            {words.map((word: { text: string; id: string; dragFrom: string }, index) =>
+                <Word text={word.text} id={word.id} index={index}/>
+            )}
         </div>
     )
 }
