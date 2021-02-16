@@ -9,11 +9,13 @@ import Word from "../Word/Word";
 
 interface WordPasteFieldProps {
     words: Array<any>,
+    setWordsInPasteField: Function,
 }
 
 function WordPasteField(
     {
         words,
+        setWordsInPasteField,
     }: WordPasteFieldProps
 ) {
 
@@ -31,6 +33,7 @@ function WordPasteField(
             })
         }
     });
+
 
     return (
         <div

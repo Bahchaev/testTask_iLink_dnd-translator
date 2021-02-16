@@ -41,19 +41,7 @@ function DragAndDropContainer() {
                 }
                     break;
                 case "Cloud": {
-                    const filteredPasteField = wordsInPasteField.filter((word: { id: any; }) => word.id !== itemID);
-                    const filteredCloud = wordsInCloud.filter((word: { id: any; }) => word.id !== itemID);
-                    const newWordsInCloud = [...filteredCloud, initialWords[wordIndex]];
 
-                    const sortFunction = (a: { id: string; }, b: { id: string; }) => {
-                        const aIndex = initialWords.findIndex((word: { id: any; }) => word.id === a.id);
-                        const bIndex = initialWords.findIndex((word: { id: any; }) => word.id === b.id);
-                        return aIndex - bIndex
-                    };
-                    newWordsInCloud.sort(sortFunction);
-
-                    setWordsInPasteField(filteredPasteField);
-                    setWordsInCloud(newWordsInCloud);
                 }
                     break;
             }
@@ -63,8 +51,8 @@ function DragAndDropContainer() {
 
     return (
         <div className={styles.dragAndDropContainer} ref={dropRef}>
-            <WordPasteField words={wordsInPasteField}/>
-            <WordCloud words={wordsInCloud}/>
+            <WordPasteField words={wordsInPasteField} setWordsInPasteField={setWordsInPasteField}/>
+            <WordCloud words={wordsInCloud} setWordsInCloud={setWordsInCloud}/>
         </div>
     )
 }

@@ -45,7 +45,7 @@ function Word({id, text, index, moveWord}: Word) {
 
             // расстояние от курсора до левого края
             // @ts-ignore
-            const hoverCursorX = (cursorOffset.y - hoverWordRect.left)
+            const hoverCursorX = (cursorOffset.x - hoverWordRect.left);
 
             //ничего не делаем если:
             if (
@@ -56,7 +56,9 @@ function Word({id, text, index, moveWord}: Word) {
             }
 
             //тут должна быть функция сдвига элемента
-            //moveWord(dragIndex, hoverIndex)
+            if (moveWord) {
+                moveWord(dragIndex, hoverIndex)
+            }
         }
     });
 
