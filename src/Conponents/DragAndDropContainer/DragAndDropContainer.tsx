@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import styles from './styles.module.css'
 import WordCloud from "../WordCloud/WordCloud";
 import WordPasteField from "../WordPasteField/WordPasteField";
 import sentenceSet from "../../sentenceSet";
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../../itemTypes";
+import update from "immutability-helper";
 
 function getArrayOfWords(indexOfSentenceSet: number) {
     const sentence = sentenceSet.get(Array.from(sentenceSet.keys())[indexOfSentenceSet]);
@@ -25,7 +26,7 @@ function DragAndDropContainer() {
     const [wordsInCloud, setWordsInCloud] = useState(initialWords);
     const [wordsInPasteField, setWordsInPasteField] = useState([]);
 
-    const [dropProps, dropRef] = useDrop({
+    const [{canDrop, isOver, didDrop, dropResult}, dropRef] = useDrop({
         accept: ItemTypes.WORD,
         drop: (item, monitor) => {
             const itemID = monitor.getItem().id;
@@ -45,14 +46,44 @@ function DragAndDropContainer() {
                 }
                     break;
             }
+        },
+
+        collect: (monitor) => {
+            return ({
+                isOver: monitor.isOver(),
+                canDrop: monitor.canDrop(),
+                didDrop: monitor.didDrop(),
+                dropResult: monitor.getDropResult()
+            })
         }
+
     });
+
+    const moveWord = useCallback((dragIndex: number, hoverIndex: number) => {
+        const dragWord = wordsInCloud[dragIndex];
+        setWordsInCloud(
+            update(wordsInCloud, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, dragWord]
+                ]
+            })
+        );
+    }, [wordsInCloud]);
+
+    // if (didDrop && dropResult.dropZone === 'Cloud') {
+    //     console.log('drop in cloud')
+    // }
+    //
+    // if (didDrop && dropResult.dropZone === 'Field') {
+    //     console.log('drop in field')
+    // }
 
 
     return (
-        <div className={styles.dragAndDropContainer} ref={dropRef}>
-            <WordPasteField words={wordsInPasteField} setWordsInPasteField={setWordsInPasteField}/>
-            <WordCloud words={wordsInCloud} setWordsInCloud={setWordsInCloud}/>
+        <div className={styles.dragAndDropContainer}>
+            <WordPasteField words={wordsInPasteField}/>
+            <WordCloud words={wordsInCloud}/>
         </div>
     )
 }

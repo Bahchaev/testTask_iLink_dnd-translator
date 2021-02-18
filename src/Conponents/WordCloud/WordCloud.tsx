@@ -8,18 +8,17 @@ import {ItemTypes} from "../../itemTypes";
 
 interface WordCloudProps {
     words: Array<any>,
-    setWordsInCloud: Function,
 }
 
 function WordCloud(
     {
         words,
-        setWordsInCloud
     }: WordCloudProps
 ) {
 
-    const [wordsInCloud, setWords] = useState(words);
-    const [{canDrop, isOver}, drop] = useDrop({
+    const [wordsInCloud, setWordsInCloud] = useState(words);
+
+    const [{canDrop, isOver, didDrop, dropResult}, drop] = useDrop({
         accept: ItemTypes.WORD,
         drop: (item, monitor) => {
             return {
@@ -30,13 +29,15 @@ function WordCloud(
             {
                 isOver: monitor.isOver(),
                 canDrop: monitor.canDrop(),
+                didDrop: monitor.didDrop(),
+                dropResult: monitor.getDropResult()
             }
         )
     });
 
     const moveWord = useCallback((dragIndex: number, hoverIndex: number) => {
         const dragWord = words[dragIndex];
-        setWords(
+        setWordsInCloud(
             update(words, {
                 $splice: [
                     [dragIndex, 1],
